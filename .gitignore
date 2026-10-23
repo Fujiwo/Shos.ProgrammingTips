@@ -1,0 +1,74 @@
+# Build artifacts and dependencies
+node_modules/
+package-lock.json
+*.log
+__pycache__/
+*.pyc
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor artifacts
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+/.claude/worktrees/
+
+# Visual Studio (user-specific files)
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.aps
+
+# .NET build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm64/
+*.binlog
+TestResults/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# C++ (MSVC / IntelliSense)
+ipch/
+*.ipch
+*.pdb
+*.ilk
+*.obj
+*.idb
+*.tlog
+*.lastbuildstate
+*.VC.db
+*.VC.opendb
+
+# CMake
+build/
+out/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+
+# Visual Studio Code
+.history/
+
+# JavaScript build output
+dist/
+coverage/
+.parcel-cache/

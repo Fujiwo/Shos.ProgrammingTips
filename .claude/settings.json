@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sync_copilot_instructions.py\"",
+            "timeout": 30,
+            "statusMessage": "CLAUDE.md を copilot-instructions.md に同期しています"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sync_skills.py\"",
+            "timeout": 60,
+            "statusMessage": ".claude/skills を .github/skills に同期しています"
+          }
+        ]
+      }
+    ]
+  }
+}
