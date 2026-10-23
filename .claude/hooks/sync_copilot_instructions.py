@@ -19,6 +19,8 @@ GENERATED_NOTICE = (
 )
 SOURCE_TITLE = "# CLAUDE.md"
 TARGET_TITLE = "# Copilot Instructions"
+SOURCE_PROFILE_LINK = "](執筆プロファイル.md)"
+TARGET_PROFILE_LINK = "](../執筆プロファイル.md)"
 
 
 def is_source_edited(hook_input):
@@ -30,6 +32,7 @@ def is_source_edited(hook_input):
 
 def build_target_text(source_text):
     body = source_text.replace(SOURCE_TITLE, TARGET_TITLE, 1)
+    body = body.replace(SOURCE_PROFILE_LINK, TARGET_PROFILE_LINK)
     return GENERATED_NOTICE + body
 
 
