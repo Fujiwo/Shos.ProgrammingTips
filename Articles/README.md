@@ -10,7 +10,7 @@
 
 ## C++
 
-(記事はまだありません)
+- [C++11 の auto: 長い型名を書かずに、型を正しく受ける](CPlusplus/CPlusplus11-auto.md)
 
 ## JavaScript
 

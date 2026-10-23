@@ -2,7 +2,6 @@
 name: review-manuscript-natural-japanese
 description: "執筆プロファイルが対象と定める原稿・記事のすべてを通読し、fujiwo-manuscript-voice の基準で自然な日本語という観点から原稿ごと・原稿横断で診断する(書き換えは行わない)"
 user-invocable: true
-disable-model-invocation: true
 ---
 
 執筆プロファイルが対象と定める原稿・記事(Markdown)のすべてを対象に、自然な日本語という観点で診断せよ。依頼者が対象のファイルやフォルダーを指定した場合は、その範囲だけを対象とする。原稿・計画・画像・サンプルコードは変更せず、レビュー結果のMarkdownだけを新規作成すること。
