@@ -1,0 +1,6 @@
+# 改行コードはリポジトリでも作業ツリーでも LF にそろえる
+* text=auto eol=lf
+
+# Windows のバッチファイルは、LF だと正しく動かないことがあるので CRLF にする
+*.cmd text eol=crlf
+*.bat text eol=crlf
