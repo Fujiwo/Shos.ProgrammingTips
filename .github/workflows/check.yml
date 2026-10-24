@@ -1,0 +1,37 @@
+# 記事・サンプルコード・自動生成ファイルを検査する
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Claude Code 以外で編集して、目次・Copilot 向けファイル・スキルのミラーの更新を忘れていないか
+      - name: 自動生成ファイルが最新か
+        run: |
+          python3 .claude/hooks/update_articles_toc.py --force
+          python3 .claude/hooks/sync_copilot_instructions.py --force
+          python3 .claude/hooks/sync_skills.py --force
+          git status --porcelain
+          test -z "$(git status --porcelain)"
+
+      - name: Markdown の品質
+        run: >
+          python3 .claude/skills/markdown-quality-audit/scripts/check_markdown.py Articles
+          --language-label-pattern '^_\[.+\]_$' --forbid-mermaid --forbid-footnotes --fail-on-findings
+
+      - name: 記事のコードと Sources/ の一致
+        run: python3 Tools/check_article_sources.py
+
+      - name: C++ のサンプルのビルドと実行
+        run: python3 Tools/build_cpp_samples.py

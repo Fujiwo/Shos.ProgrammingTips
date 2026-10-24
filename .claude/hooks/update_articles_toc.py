@@ -47,27 +47,37 @@ def is_article_edited(hook_input):
 
 
 def read_title(article_path):
+    # コードブロックの中の "# " (シェルのコメントなど) は見出しとして扱わない
+    in_code_block = False
     for line in article_path.read_text(encoding="utf-8").splitlines():
-        if line.startswith("# "):
+        if line.lstrip().startswith(("```", "~~~")):
+            in_code_block = not in_code_block
+        elif not in_code_block and line.startswith("# "):
             return line[2:].strip()
     return article_path.stem
 
 
+def escape_link_text(text):
+    return text.replace("[", r"\[").replace("]", r"\]")
+
+
 def language_directories():
-    directories = [path for path in ARTICLES_ROOT.iterdir() if path.is_dir()]
-    known_order = list(LANGUAGES)
-    return sorted(directories, key=lambda path: (
-        known_order.index(path.name) if path.name in known_order else len(known_order), path.name))
+    # LANGUAGES の言語は、フォルダーがなくても (Git は空のフォルダーを管理しない) 節を出す
+    existing = {path.name: path for path in ARTICLES_ROOT.iterdir() if path.is_dir()}
+    known = [existing.get(name, ARTICLES_ROOT / name) for name in LANGUAGES]
+    unknown = sorted(path for name, path in existing.items() if name not in LANGUAGES)
+    return known + unknown
 
 
 def build_language_section(language_directory):
-    articles = sorted(path for path in language_directory.rglob("*.md") if is_article(path))
+    articles = (sorted(path for path in language_directory.rglob("*.md") if is_article(path))
+                if language_directory.exists() else [])
     lines = [f"## {LANGUAGES.get(language_directory.name, language_directory.name)}", ""]
     if not articles:
         lines.append(NO_ARTICLES)
     for article in articles:
         link = article.relative_to(ARTICLES_ROOT).as_posix().replace(" ", "%20")
-        lines.append(f"- [{read_title(article)}]({link})")
+        lines.append(f"- [{escape_link_text(read_title(article))}]({link})")
     return "\n".join(lines) + "\n"
 
 

@@ -8,7 +8,7 @@
 | 位置づけ | C++11 のお勧め機能を1本に一つずつ紹介する連載の1本目 |
 | 記事のファイル | `Articles/CPlusplus/CPlusplus11-auto.md` |
 | サンプルのプロジェクト | `Articles/CPlusplus/Sources/CPlusplusTips/CPlusplus11Auto/` |
-| バナー画像 | `Articles/CPlusplus/Images/CPlusplus11-auto-banner.svg`(新規作成) |
+| バナー画像 | なし(当初は `Articles/CPlusplus/Images/CPlusplus11-auto-banner.svg` を作成したが、`執筆プロファイル.md` 4-2でバナーを置かない方針にしたため削除) |
 | 分量の目安 | 本文 2,000〜3,000字、コード例 4〜5個 |
 
 ### 1-1. タイトル
@@ -72,7 +72,7 @@
 
 ## 5. サンプルのプロジェクト
 
-- `CPlusplusTips` ソリューション (`HelloCPlusplusTips.slnx`) に `CPlusplus11Auto` プロジェクトを追加する。
+- `CPlusplusTips` ソリューション (`CPlusplusTips.slnx`) に `CPlusplus11Auto` プロジェクトを追加する。
 - 設定は `HelloCPlusplusTips.vcxproj` を基にし、`LanguageStandard` を `stdcpp14` にする(全構成)。
 - コンソールアプリケーションとし、ソースは `main.cpp` の1ファイルにする。
 
@@ -93,9 +93,9 @@
 1. この計画書の確認(済み。8節)
 2. サンプルコードの実装(`sustainable-code-jp`)と、g++ での動作確認(済み。g++ 13.3 の `-std=c++11` で警告なし)
 3. Visual Studio のプロジェクトの追加(済み。Visual Studio 2026 でビルド・実行を確認)
-4. バナー画像 (SVG) の作成(済み)
+4. バナー画像 (SVG) の作成(済み。のちに方針変更で削除)
 5. 記事本文の執筆(`fujiwo-manuscript-voice`)(済み。初稿)
-6. 検証(6節)とレビュー(`review-manuscript-natural-japanese`。結果は `Reviews/` に置く)(済み。`Reviews/自然な日本語レビュー.md` の指摘をすべて反映)
+6. 検証(6節)とレビュー(`review-manuscript-natural-japanese`。結果は `Reviews/` に置く)(済み。`Reviews/自然な日本語レビュー-CPlusplus11-auto-20261023.md` の指摘をすべて反映)
 
 ## 8. 決定事項
 

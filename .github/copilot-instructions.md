@@ -53,6 +53,11 @@ Articles/CSharp/
         └── <記事ごとのプロジェクト>/
 ```
 
+- 各ソリューションの `Hello〜` プロジェクト(`HelloCSharpTips`、`HelloCPlusplusTips`)は、記事に対応しない雛形で、開発環境とソリューションがビルドできることの確認に使う。新しいプロジェクトを作るときの設定の基にもする。
+- サンプルの確認には、次のスクリプトを使う。どちらも、GitHub Actions(`.github/workflows/check.yml`)が push と pull request のたびに実行する。
+  - `python3 Tools/check_article_sources.py`: 記事に埋め込んだコードが `Sources/` のコードと一致するかを確認する。
+  - `python3 Tools/build_cpp_samples.py`: C++ のプロジェクトを、`LanguageStandard` に合わせた g++ でビルド・実行する。MSVC でのビルドの代わりにはならない。
+
 ## 執筆ルール
 
 文体・表記・書式の詳細は [執筆プロファイル.md](../執筆プロファイル.md) に従う。
@@ -78,7 +83,8 @@ Articles/CSharp/
 |---|---|
 | `.github/prompts/` | 繰り返し使うプロンプトを置く |
 | `Plans/` | 記事や作業の計画を置く |
-| `Reviews/` | レビュー結果を置く |
+| `Reviews/` | レビュー結果を置く。ファイル名は `<レビューの種類>-<対象>-<YYYYMMDD>.md` とする(例: `自然な日本語レビュー-CPlusplus11-lambda-20261024.md`)。対象は記事のファイル名から拡張子を除いたもので、リポジトリ全体が対象なら `-<対象>` を省く。同じ名前のファイルがあるときは、末尾に `-2`、`-3` と連番を付ける。スキルが別のファイル名を指定していても、この規則を優先する |
+| `Tools/` | 記事とサンプルコードを検査するスクリプトを置く |
 
 ## 指示ファイルとスキルの同期
 

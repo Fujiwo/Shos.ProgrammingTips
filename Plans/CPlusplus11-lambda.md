@@ -98,7 +98,7 @@
 
 ## 5. サンプルのプロジェクト
 
-- `CPlusplusTips` ソリューション (`HelloCPlusplusTips.slnx`) に `CPlusplus11Lambda` プロジェクトを追加する。
+- `CPlusplusTips` ソリューション (`CPlusplusTips.slnx`) に `CPlusplus11Lambda` プロジェクトを追加する。
 - 設定は `CPlusplus11Auto.vcxproj` を基にし、`LanguageStandard` を `stdcpp14` にする(全構成)。
 - コンソールアプリケーションとし、ソースは `main.cpp` の1ファイルにする。
 - サンプルの設計・実装・レビューには `sustainable-code-jp` を使う。
@@ -129,7 +129,7 @@
 2. サンプルコードの実装(`sustainable-code-jp`)と、g++ での動作確認(済み。g++ 13.3 の `-std=c++11 -pedantic-errors -Wall -Wextra` で警告なし)
 3. Visual Studio のプロジェクトの追加と、ビルド・実行の確認(済み。MSBuild の Debug|x64 でビルド・実行を確認)
 4. 記事本文の執筆(`fujiwo-manuscript-voice`)(済み。初稿)
-5. 検証(7節)とレビュー(`review-manuscript-natural-japanese`。結果は `Reviews/` に置く)(済み。`Reviews/自然な日本語レビュー20261024.md` の指摘を反映)
+5. 検証(7節)とレビュー(`review-manuscript-natural-japanese`。結果は `Reviews/` に置く)(済み。`Reviews/自然な日本語レビュー-CPlusplus11-lambda-20261024.md` の指摘を反映)
 
 ## 9. 決定事項
 
