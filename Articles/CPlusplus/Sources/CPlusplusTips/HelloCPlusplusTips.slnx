@@ -4,5 +4,6 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="CPlusplus11Auto/CPlusplus11Auto.vcxproj" Id="c63c0296-186a-4660-ae7b-7f892d44e4cc" />
+  <Project Path="CPlusplus11Lambda/CPlusplus11Lambda.vcxproj" Id="f92f2c72-97fe-48fc-949f-88882d20d9f2" />
   <Project Path="HelloCPlusplusTips/HelloCPlusplusTips.vcxproj" Id="72380124-9737-4c61-9423-aac7f8fa1fe8" />
 </Solution>

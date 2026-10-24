@@ -125,9 +125,9 @@
 ## 8. 作業の手順
 
 1. この計画書の確認(済み。9節)
-2. サンプルコードの実装(`sustainable-code-jp`)と、g++ での動作確認
-3. Visual Studio のプロジェクトの追加と、ビルド・実行の確認
-4. 記事本文の執筆(`fujiwo-manuscript-voice`)
+2. サンプルコードの実装(`sustainable-code-jp`)と、g++ での動作確認(済み。g++ 13.3 の `-std=c++11 -pedantic-errors -Wall -Wextra` で警告なし)
+3. Visual Studio のプロジェクトの追加と、ビルド・実行の確認(済み。MSBuild の Debug|x64 でビルド・実行を確認)
+4. 記事本文の執筆(`fujiwo-manuscript-voice`)(済み。初稿)
 5. 検証(7節)とレビュー(`review-manuscript-natural-japanese`。結果は `Reviews/` に置く)
 
 ## 9. 決定事項
