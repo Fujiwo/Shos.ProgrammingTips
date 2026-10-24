@@ -2,7 +2,6 @@
 // 記事: Articles/CPlusplus/CPlusplus11-lambda.md
 
 #include <algorithm>
-#include <cstdlib>
 #include <iostream>
 #include <vector>
 
@@ -96,26 +95,6 @@ void SumWithReferenceCapture()
     std::cout << "total: " << total << ", count: " << count << '\n';
 }
 
-// 例 6. キャプチャーしないラムダ式は、関数ポインターに変換できる
-void SortWithQsort()
-{
-    std::vector<int> scores = MakeScores();
-
-    // std::qsort が要求する比較関数の型 int (*)(const void*, const void*) に、
-    // 同じシグネチャーのラムダ式を代入する (キャプチャーしないので変換できる)
-    int (*compare)(const void*, const void*) = [](const void* left, const void* right) -> int {
-        const int lhs = *static_cast<const int*>(left);
-        const int rhs = *static_cast<const int*>(right);
-        return (lhs > rhs) - (lhs < rhs); // 小さい順に並べる
-    };
-    std::qsort(scores.data(), scores.size(), sizeof(int), compare);
-
-    std::cout << "sorted:";
-    for (int score : scores)
-        std::cout << ' ' << score;
-    std::cout << '\n';
-}
-
 } // namespace
 
 int main()
@@ -125,5 +104,4 @@ int main()
     CountWithLambda(80);
     CaptureByValueAndByReference();
     SumWithReferenceCapture();
-    SortWithQsort();
 }
