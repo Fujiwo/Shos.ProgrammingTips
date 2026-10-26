@@ -10,7 +10,9 @@ C++11 の右辺値参照を紹介します。右辺値参照を使うと、渡�
 
 ※ MSVC で指定できる最も古い C++ の言語標準は C++14 ([/std (言語の標準バージョンの指定)](https://learn.microsoft.com/ja-jp/cpp/build/reference/std-specify-language-standard-version))。
 
-連載「C++11 のムーブ」の1本目です。
+連載「C++11 のムーブ」の1本目です。連載のほかの記事は次のとおりです。
+
+- 2本目: [C++11 のムーブ: 大きなオブジェクトを、コピーせずに受け渡す](CPlusplus11-move-2-usage.md)
 
 ## これまでの書き方と課題
 
