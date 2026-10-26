@@ -14,7 +14,7 @@ std::vector<int> MakeScores()
 }
 
 // 例 1. 関数ポインターで条件を渡す
-// しきい値は関数の中に固定されていて、呼ぶ側から変えられない
+// 閾値は関数の中に固定されていて、呼ぶ側から変えられない
 bool IsPassing(int score)
 {
     return score >= 60;
@@ -29,8 +29,8 @@ void CountWithFunctionPointer()
     std::cout << "function pointer: " << count << " scores >= 60\n";
 }
 
-// 例 2. 関数オブジェクトで、しきい値を持たせる
-// しきい値をメンバー変数に持ち、operator() で比べる
+// 例 2. 関数オブジェクトで、閾値を持たせる
+// 閾値をメンバー変数に持ち、operator() で比べる
 class AtLeast
 {
 public:
@@ -46,12 +46,12 @@ void CountWithFunctionObject(int threshold)
 {
     const std::vector<int> scores = MakeScores();
 
-    // しきい値を渡して作ったオブジェクトを、関数のように呼んでもらう
+    // 閾値を渡して作ったオブジェクトを、関数のように呼んでもらう
     auto count = std::count_if(scores.begin(), scores.end(), AtLeast(threshold));
     std::cout << "function object : " << count << " scores >= " << threshold << '\n';
 }
 
-// 例 3. ラムダ式で、しきい値をキャプチャーする
+// 例 3. ラムダ式で、閾値をキャプチャーする
 void CountWithLambda(int threshold)
 {
     const std::vector<int> scores = MakeScores();
@@ -72,7 +72,7 @@ void CaptureByValueAndByReference()
     auto byValue     = [threshold](int score) { return score >= threshold; };  // 60 をコピーして持つ
     auto byReference = [&threshold](int score) { return score >= threshold; }; // 変数 threshold を参照する
 
-    threshold = 80; // ラムダ式を作ったあとで、しきい値を変える
+    threshold = 80; // ラムダ式を作ったあとで、閾値を変える
 
     std::cout << "captured by value    : "
               << std::count_if(scores.begin(), scores.end(), byValue) << " scores\n";     // 60 のまま
