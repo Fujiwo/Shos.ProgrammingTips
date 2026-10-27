@@ -30,6 +30,12 @@ jobs:
           python3 .claude/skills/markdown-quality-audit/scripts/check_markdown.py Articles
           --language-label-pattern '^_\[.+\]_$' --forbid-mermaid --forbid-footnotes --fail-on-findings
 
+      # 診断スコアの分母(地の文の文字数)と --baseline の読み込みの回帰テスト
+      - name: natural-japanese の lint のテスト
+        run: |
+          python3 -m pip install sudachipy sudachidict-core
+          python3 -m unittest discover -s .claude/skills/natural-japanese/scripts -p test_lint.py
+
       - name: 記事のコードと Sources/ の一致
         run: python3 Tools/check_article_sources.py
 

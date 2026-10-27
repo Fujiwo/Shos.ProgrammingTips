@@ -42,8 +42,10 @@ python <skills>\yomiyasu\scripts\yomiyasu_lint.py --json $target
 
 ```powershell
 $env:PYTHONUTF8=1
-python <skills>\yomiyasu\scripts\yomiyasu_diff.py $before $target --json
+python <skills>\yomiyasu\scripts\yomiyasu_diff.py $before $target --changed-only --json
 ```
+
+原稿全体を渡すので、`--changed-only` で、つながりの候補(`logic`)を比較基準から変わった文だけに絞る。変えた文の直後にある、変えていない文のつながりは、候補に出なくても目視で確かめる。
 
 主たる立場が明確な場合だけ `--stance=勧め`、`--stance=決まり`、`--stance=説明` を追加する。説明と助言が混在する章で、各文を同じ働きにそろえるために指定してはいけない。判定できなければ省略する。
 

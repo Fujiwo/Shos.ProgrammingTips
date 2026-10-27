@@ -94,14 +94,23 @@ LOGIC = [
     ("文頭のつなぎ", re.compile(r"^(?:ただし|しかし|一方|また|さらに|つまり|そのため|したがって|だから|それでも|なお|そこで|ところが)")),
     ("主題の「も」", re.compile(r"^(?!それで)[^、。]{0,17}[^、。てでり]も、")),
     ("予告だけの文", re.compile(r"^.{0,28}(?:が|も)あります。$|次の(?:点|こと|とおり|通り)です|以下の(?:点|こと|とおり|通り)")),
-    ("文頭の指示語", re.compile(r"^(?:これ|それ(?!でも|から)|こう(?:した|して|する|いう)|そう(?:した|して|する|いう)|この|その)(?!して)")),
+    # 「これまで」「これから」「それまで」は時を表す語で、前の文を指さないので除く
+    ("文頭の指示語", re.compile(r"^(?:これ(?!まで|から)|それ(?!でも|から|まで)|こう(?:した|して|する|いう)|そう(?:した|して|する|いう)|この|その)(?!して)")),
 ]
 
 
-def logic_points(t: str):
+def logic_sentences(t: str):
+    """つながりを見る対象の文。見出しは前後の文とつながる文ではないので除く"""
+    t = re.sub(r"(?m)^\s*#+\s.*$", "", t)
+    return [s.strip() for s in sentences(normalize(t))]
+
+
+def logic_points(t: str, skip=frozenset()):
+    """skip に含まれる文（元の文から変わっていない文など）は候補にしない"""
     pts = []
-    for s in sentences(normalize(t)):
-        s2 = s.strip()
+    for s2 in logic_sentences(t):
+        if s2 in skip:
+            continue
         for name, pat in LOGIC:
             if pat.search(s2):
                 pts.append({"kind": name, "sentence": s2})
@@ -766,10 +775,11 @@ def context(t: str, i: int, j: int, width: int = 18) -> str:
     return t[a:i] + "［" + t[i:j] + "］" + t[j:b]
 
 
-def diff(orig_raw: str, rw_raw: str, stance=None) -> dict:
+def diff(orig_raw: str, rw_raw: str, stance=None, changed_only=False) -> dict:
     o, r = normalize(orig_raw), normalize(rw_raw)
-    out = {"markers": [], "new_words": [], "lost_words": [], "structure": [], "spans": [], "logic": logic_points(rw_raw),
-           "bold": bold_problems(rw_raw)}
+    unchanged = frozenset(logic_sentences(orig_raw)) if changed_only else frozenset()
+    out = {"markers": [], "new_words": [], "lost_words": [], "structure": [], "spans": [],
+           "logic": logic_points(rw_raw, unchanged), "bold": bold_problems(rw_raw)}
     rw_units, flags = stance_flags(rw_raw, stance)
     orig_units, orig_flags = stance_flags(orig_raw, stance)
     out["endings"] = {"stance": stance, "changes": _ending_changes_from_units(orig_units, rw_units),
@@ -881,10 +891,11 @@ if __name__ == "__main__":
             print("\n".join(bold_lines(bp)))
         sys.exit(0)
     if len(args) < 2:
-        print("使い方: python3 yomiyasu_diff.py 元の文.txt 書き直した文.txt [--stance=勧め|決まり|説明] [--json]")
+        print("使い方: python3 yomiyasu_diff.py 元の文.txt 書き直した文.txt [--stance=勧め|決まり|説明] [--changed-only] [--json]")
         print("　　　  python3 yomiyasu_diff.py --endings ファイル [--stance=勧め|決まり|説明]")
+        print("　　　  --changed-only: つながりの候補を、元の文から変わった文だけに絞る")
         sys.exit(1)
     o = open(args[0], encoding="utf-8").read()
     r = open(args[1], encoding="utf-8").read()
-    d = diff(o, r, stance)
+    d = diff(o, r, stance, changed_only="--changed-only" in sys.argv)
     print(json.dumps(d, ensure_ascii=False, indent=1) if "--json" in sys.argv else report(d))

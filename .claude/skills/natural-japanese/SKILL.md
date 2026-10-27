@@ -86,15 +86,23 @@ uv run scripts/lint.py --json <file>
 
 `--baseline` は BOM あり・なしの UTF-8 JSON に対応する。JSON の `stats.prose_char_count` は、Markdown マスク後の検査対象から空白文字を除いた文字数である。`score` の分母と採点可能条件にはこの値を使い、元ファイルの長さで代用しない（`references/diagnose.md`）。
 
-lint の地の文計数と baseline 読み込みを変更した場合は、標準ライブラリの回帰テストも実行する（`<スキル配置ディレクトリ>` を実際の場所に替える）。
+lint の地の文計数と baseline 読み込みを変更した場合は、回帰テストも実行する（`<スキル配置ディレクトリ>` を実際の場所に替える）。テストは `lint.py` を読み込むので、`uv run` を使わずに実行するときは、同じ Python 環境に `sudachipy` と `sudachidict-core` を入れておく。
+
+```bash
+# bash
+python -m pip install sudachipy sudachidict-core
+python -m unittest discover -s <スキル配置ディレクトリ>/scripts -p test_lint.py
+```
 
 ```powershell
+# PowerShell
+python -m pip install sudachipy sudachidict-core
 python -m unittest discover -s <スキル配置ディレクトリ>\scripts -p test_lint.py
 ```
 
 もう一つ、`scripts/semantic.py` という EXPERIMENTAL な意味的検出器がある。文埋め込みで隣接文の類似度の起伏（話題の平板さ）を測るもので、torch + sentence-transformers 依存・初回~1GBのモデルダウンロードを伴う重量級のため lint.py 本体には組み込まず、独立した opt-in エントリにしている。フル工程や環境が許すときだけ `uv run scripts/semantic.py --json <file>` を追加で回し、findings は lint と同じく判断台帳に載せて扱う。
 
-## 4. 検査(2) — 判断台帳と二つのレビュー
+## 4. 検査(2) — 判断台帳と三つのレビュー
 
 lint の findings は疑いの提示であり、機械的に全部直せという指示ではない。今回ヒットしたカテゴリの節を `references/revision-guide.md` で読み直し、文脈に照らして「直す/直さない」を判断する。判断は finding 一つひとつに「直した」か「残す（理由）」かを書き残しながら進める（台帳の形式は同ファイルの「判断台帳」を参照）。
 
@@ -111,13 +119,15 @@ lint は文レベルの表層しか見えない。特に箇条書き主体の議
 5. 結びが So What に接続しているか（レポート系）
 6. business・techの解説・ケーススタディ・レポートでは、固定質問への主要回答を後半まで待たせていないか。また、事実説明とは別に予告・異変・種明かし・回収を何度も追わせていないか
 
-文書タイプが定まっている場合は、doctype の「必須要素」と「AIがやりがちな失敗」も照合する。
+### doctype照合
+
+文書タイプが定まっている場合は、該当する `references/doctypes/` のファイルの「必須要素」と「AIがやりがちな失敗」を本文と照合する。構造レビューと見る対象が重なっても、独立した観点として確かめる。
 
 ### 読みやすさレビュー
 
 語順、読点の位置、一文一義、主語述語の距離、こそあど言葉の多用、冗長表現は、機械的な閾値化ができないと実証済みの判断領域。`references/readability-principles.md`（一般原則）と `references/readability-antipatterns.md`（悪文パターン24種）を参照しながら毎周回、目視で判断する。短さは目的関数にせず、事実保持と主述・係り受けを確認した後の同等候補間でだけタイブレーカーに使う。
 
-構造レビュー・読みやすさレビューで見つけた問題も、lint の finding と同様に判断台帳へ一行として起こす。
+構造レビュー・doctype照合・読みやすさレビューで見つけた問題も、lint の finding と同様に判断台帳へ一行として起こす。
 
 段落が一般論しか言えていない（固有名・数値・実例がない）場合は、書き方でなく素材の問題であることが多い。`references/revision-guide.md` の「素材不足の分岐」を見て情報収集に戻るべきか判断する。
 

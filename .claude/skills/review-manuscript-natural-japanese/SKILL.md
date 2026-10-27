@@ -17,7 +17,7 @@ user-invocable: true
 
 ## 診断の基準
 
-文体・表記・AI臭さに関わる判断は、個別スキルを直接参照せず、必ず `../fujiwo-manuscript-voice/SKILL.md` を入口として読み、そこが固定する順序(fujiwo-style → japanese-tech-writing → natural-japanese → stop-ai-slop-jp)と `../fujiwo-manuscript-voice/references/conflict-resolutions.md` の裁定に従うこと。裁定表にない衝突はfujiwo-styleを優先し、全体サマリーでその旨を明記する。プロジェクト固有の約束事(読者像、文体、表記)は執筆プロファイルに従う。
+文体・表記・AI臭さに関わる判断は、個別スキルを直接参照せず、必ず `../fujiwo-manuscript-voice/SKILL.md` を入口として読み、その1節が定める読む順序・読込範囲(中核4スキルと、補助スキルを読む条件)と `../fujiwo-manuscript-voice/references/conflict-resolutions.md` の裁定に従うこと。裁定表にない衝突はfujiwo-styleを優先し、全体サマリーでその旨を明記する。プロジェクト固有の約束事(読者像、文体、表記)は執筆プロファイルに従う。
 
 `fujiwo-manuscript-voice` の `audit` モードが既定で返すのは、natural-japaneseの`score`相当と、チェックリストの「立場」「主体性」の所見に限られる。本レビューはそれより広く、`../fujiwo-manuscript-voice/references/manuscript-checklist.md` の全項目を、その見出し順である次の優先順位で確認せよ。
 
