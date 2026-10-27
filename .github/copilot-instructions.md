@@ -71,7 +71,7 @@ Articles/CSharp/
 
 | 作業 | 使うスキル |
 |---|---|
-| 記事の新規執筆・改稿・文体の診断 | `fujiwo-manuscript-voice`(中核4スキル `fujiwo-style`・`japanese-tech-writing`・`natural-japanese`・`stop-ai-slop-jp` を束ねる) |
+| 記事の新規執筆・改稿・文体の診断 | `fujiwo-manuscript-voice`(中核4スキル `fujiwo-style`・`japanese-tech-writing`・`natural-japanese`・`stop-ai-slop-jp` と、補助スキル `yomiyasu`・`explain-before-shorten` を束ねる) |
 | 記事の推敲(AIっぽさの除去、読みやすさの改善) | `yomiyasu`、`stop-ai-slop-jp`、`natural-japanese` |
 | 記事全体のレビュー | `review-manuscript-natural-japanese` |
 | Markdown の品質確認(リンク切れ、閉じていないコードフェンスなど) | `markdown-quality-audit` |

@@ -1,6 +1,6 @@
 # 中核4スキルと補助スキルの衝突と裁定
 
-fujiwo-style、japanese-tech-writing、natural-japanese、stop-ai-slop-jp と、補助スキル yomiyasu を書籍・記事の原稿(Markdown)に同時適用したとき、規則が食い違う箇所と、原稿で採る側を固定する。表にない衝突に出会ったら **fujiwo-style を採り**、最終報告でここへの追記を提案する。ただし読みやすさの修正で意味が変わる場合は適用せず、原文を残す。
+fujiwo-style、japanese-tech-writing、natural-japanese、stop-ai-slop-jp と、補助スキル yomiyasu・explain-before-shorten を書籍・記事の原稿(Markdown)に同時適用したとき、規則が食い違う箇所と、原稿で採る側を固定する。表にない衝突に出会ったら **fujiwo-style を採り**、最終報告でここへの追記を提案する。ただし読みやすさの修正で意味が変わる場合は適用せず、原文を残す。
 
 優先順位の原則:
 
@@ -9,7 +9,7 @@ fujiwo-style、japanese-tech-writing、natural-japanese、stop-ai-slop-jp と、
 3. natural-japanese(工程・読みやすさ・doctype。書籍・記事は `references/doctypes/book.md`)
 4. stop-ai-slop-jp(検査観点。ブログ・エッセイ向けの規則は書籍向けに読み替える)
 
-`yomiyasu` はこの順位を置き換えず、局所的な推敲と意味保持の点検を補助する。既存規則との重複は既存の担当に統合し、独立した禁止語リストや改稿工程を増やさない。
+`yomiyasu` はこの順位を置き換えず、局所的な推敲と意味保持の点検を補助する。`explain-before-shorten` も同様に、段落の説明の組み立て直しだけを補助する。既存規則との重複は既存の担当に統合し、独立した禁止語リストや改稿工程を増やさない。
 
 japanese-tech-writing と stop-ai-slop-jp は「命題型見出しを避ける」「翻訳調動詞を戻す」「太字強調を絞る」など重複する項目が多い。重複する項目は japanese-tech-writing の記述の方が体系的なので、そちらを正とし、stop-ai-slop-jp 側は重複しない項目(偏愛語リスト、記号のアーティファクト、ムラ)だけを担当させる。
 
@@ -52,6 +52,16 @@ japanese-tech-writing と stop-ai-slop-jp は「命題型見出しを避ける�
 | 28 | yomiyasu の対話出力形式・類似スキル無効化の注意 vs 統合スキルの台帳と報告 | 原稿ファイルには本文だけを反映し、変更理由・残す理由・確認事項は既存の台帳と報告へ統合する。既存スキルを無効化せず、この裁定に従う。`audit` では書き換えない | 出力欄を原稿へ混入させず、工程と裁定を一元化する |
 | 29 | yomiyasu lint「修正試行最大2回」、diff「修正1回・往復しない」 vs natural-japanese の収束ループ | 全体は既存工程で管理する。補助lintによる同じ問題の修正試行は最大2回、補助diffからの修正は1回とし、警告消しの往復は行わない。同じ指摘が2周連続で再発したら発散ガードを使い、原文を残すか著者確認へ進む | 別々の収束ループを回して修正を発散させない |
 
+## 補助スキル explain-before-shorten の裁定
+
+| # | 衝突 | 裁定 | 根拠 |
+|---|---|---|---|
+| 30 | explain-before-shorten「口頭ならどう説明するかを考える」 vs fujiwo-style の文体の基調・裁定 #21 | 口頭での説明は、内容を組み立てるための作業メモとしてだけ使う。原稿の文体は、裁定 #21 とプロファイルに従う。作業メモを原稿に残さない | explain-before-shorten 自身も「完成文をくだけた口調にする指示ではない」と書いている。原稿では明文化して固定する |
+| 31 | explain-before-shorten「意味を保って短くする」 vs プロファイルの分量の目安 | 短くするのは、段落や文の中の話題を整理するときだけ。分量の目安に合わせるために、条件や制約を削らない。目安を超えるときは、話題を減らすか別の原稿に回すかを確認事項にする | 分量の目安は原稿全体の話。japanese-tech-writing も、冗長かどうかを字数で判定しない |
+| 32 | explain-before-shorten「重複する補足や主題から外れる話は、省略・移動を検討する」 vs `revise` は問題箇所の近くだけを直す方針・計画書で決めた原稿ごとの分担 | `revise` で直すのは段落の中だけ。段落を越える削除・移動は確認事項にして、提案だけする。`audit` では書き換えない | explain-before-shorten 自身も、大きな削除・移動は「依頼範囲を確認する」と書いている。計画書で決めた分担は、推敲では動かさない |
+| 33 | explain-before-shorten「『分離』『管理』『対応』『保証』などの語だけで、実際の動きや条件を代用しない」 vs 定義された術語・規格の用語(例外安全の「強い保証」など) | 定義された術語・規格の用語は残す(裁定 #15・#27 と同じ方針)。言い換えるのは、術語ではない抽象語で動きや条件をぼかしている箇所だけ | 技術書・技術記事では「保証」「管理」が術語として使われることがある |
+| 34 | explain-before-shorten「何がどうなるか、なぜそうなるか、どんな場合かを具体的にする」 vs yomiyasu の「情報の不増補」・裁定 #22 | 組み立てるときに補った因果・条件を本文に入れるのは、原文・提供された素材・検証結果に根拠があるものだけ。根拠のないものは確認事項にする。手順5で組み立て直すのは、1段落につき1回まで。全体の収束は裁定 #29 に従う | 説明を具体的にする作業が、推測で中身を書き足すことにならないようにする |
+
 ## 補足: 中核4スキルと補助スキルの適用範囲
 
 - fujiwo-style: 全節。特に 3節(表記)、4節 型D、7節(チェック項目)
@@ -59,3 +69,4 @@ japanese-tech-writing と stop-ai-slop-jp は「命題型見出しを避ける�
 - natural-japanese: 工程(§1〜§7)、`references/writing-constitution.md`、`references/doctypes/book.md`、`references/readability-*.md`、`references/revision-guide.md`
 - stop-ai-slop-jp: 「大原則」、A-1(false agency)、A-2(反証可能な主張)、A-6 の前半(両論併記を捨てる)、B-9(ムラ)、C-11(偏愛語・必殺技造語のうち japanese-tech-writing と重複しない語)、「修正の優先順位」、`references/structures.md`、`references/phrases.md`
 - yomiyasu: 意味の4点、主述・修飾・接続・条件の点検、修正前後の比較。数値目安・文体・出力形式・反復回数は裁定 #22〜#29 に従い、実行手順は `yomiyasu-integration.md` に従う
+- explain-before-shorten: 手順1〜5と「書き換えの例」。段落単位で、`../SKILL.md` 3-4 で症状が見つかった箇所だけに使う。数値目安や出力形式は持たない。裁定 #30〜#34 に従う

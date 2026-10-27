@@ -11,7 +11,7 @@
 
 ## 0. このファイルの役割
 
-このファイルは、Fujiwo 名義の文章を書く汎用スキル群(`fujiwo-style`、`fujiwo-manuscript-voice`、`japanese-tech-writing`、`natural-japanese`、`stop-ai-slop-jp`、補助スキル `yomiyasu`)を、このプロジェクトに適用するときの**プロジェクト固有の約束事**をまとめたものである。
+このファイルは、Fujiwo 名義の文章を書く汎用スキル群(`fujiwo-style`、`fujiwo-manuscript-voice`、`japanese-tech-writing`、`natural-japanese`、`stop-ai-slop-jp`、補助スキル `yomiyasu`・`explain-before-shorten`)を、このプロジェクトに適用するときの**プロジェクト固有の約束事**をまとめたものである。
 
 優先順位は次のとおりとする。
 
