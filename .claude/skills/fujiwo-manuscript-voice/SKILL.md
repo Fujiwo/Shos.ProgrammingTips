@@ -29,13 +29,15 @@ Fujiwo 名義の書籍・記事の日本語 Markdown 原稿を、本人が書い
 
 ## 1. 先に読むもの
 
+`quick` は検査だけでなく資料の読込範囲も絞る。以下の共通規則と裁定は省略せず、症状別の詳細は必要になったときだけ読む。同じ会話で読んだ内容が手元に残っていれば、読み直さない。入口経由では、この節の読込範囲を natural-japanese 単独の quick の読込範囲より優先する。`full` でも、関係のない補助資料をすべて読む必要はない。
+
 1. 執筆プロファイル(0節)。
 2. `../fujiwo-style/SKILL.md` 全文(短い)。構成の型は 4節から選ぶ(書籍の章なら型D。プロファイルに指定があればそれに従う)。
 3. `../japanese-tech-writing/SKILL.md` 全文。段落・論証・読み手の負荷・比喩の規範として使う。
-4. `../natural-japanese/SKILL.md` と、原稿の種類に合う `../natural-japanese/references/doctypes/` の1ファイル(書籍の章・技術記事なら `book.md`。プロファイルに指定があればそれに従う)。`book.md` のうち、章のつながり(前章との橋渡し、次章への接続)と学習者向けの用語導入は、プロファイルの構成の型と説明の粒度に合う場合だけ適用する。
+4. `../natural-japanese/SKILL.md` と、原稿の種類に合う `../natural-japanese/references/doctypes/` の1ファイル(書籍の章・技術記事なら `book.md`。プロファイルに指定があればそれに従う)。`audit` では `../natural-japanese/references/diagnose.md` も必読とする。その他の詳細資料は、quick では指摘の判断に必要な節だけ、full では各レビューに必要な節を読む。`book.md` のうち、章のつながり(前章との橋渡し、次章への接続)と学習者向けの用語導入は、プロファイルの構成の型と説明の粒度に合う場合だけ適用する。
 5. `../stop-ai-slop-jp/SKILL.md` の「大原則」「コアルール」「修正の優先順位」。
-6. `../yomiyasu/SKILL.md` と `../yomiyasu/references/domains/tech.md`。意味保持と局所的な推敲に使い、数値目安・文体・出力形式は本スキルの裁定に従う。構文の判断に迷ったときだけ `../yomiyasu/references/gemini-syntax.md` と `../yomiyasu/references/slop-catalog.md` の該当箇所を読む。
-7. `../explain-before-shorten/SKILL.md` の「手順」1〜5と「書き換えの例」。手順6(保存結果と表示の確認)は、3-6・3-7 で代える。
+6. `../yomiyasu/SKILL.md` の「最優先ルール: 意味の保持」。`quick` では全文を先読みせず、主述・修飾・接続・文末などで問題が出たときだけ、該当する節を追加する。`full` では本体全文と `../yomiyasu/references/domains/tech.md` を読む。意味保持と局所的な推敲に使い、数値目安・文体・出力形式は本スキルの裁定に従う。構文の判断に迷ったときだけ `../yomiyasu/references/gemini-syntax.md` と `../yomiyasu/references/slop-catalog.md` の該当箇所を読む。いずれのモードでも、補助lint・diffの実行条件は8項の統合手順に従い、省略しない。
+7. `../explain-before-shorten/SKILL.md` の「手順」1〜5と「書き換えの例」は、`write` の設計時か、2節に挙げた症状がある段落を扱うときに読む。症状のない短い改稿では先読みしない。手順6(保存結果と表示の確認)は、3-6・3-7 で代える。
 8. 本スキルの `references/conflict-resolutions.md`(中核4スキルと補助スキルの衝突と裁定)、`references/yomiyasu-integration.md`(適用範囲と検査手順)。**衝突が見えたら自分で裁定せず、この表を引く。表にない衝突は fujiwo-style を採り、最終報告で報告する。ただし意味が変わる修正は適用せず、確認事項にする。**
 9. プロファイルが指す、対象章の計画書と目次(あれば)。
 
@@ -53,7 +55,7 @@ Fujiwo 本人の書籍調の正例は、プロファイルが指す資料(自筆
 
 `explain-before-shorten` は、`write` では 3-1 で節ごとの説明を組み立てるときに、`revise` では 3-4 で「何を言いたいか分からない」「抽象語で動きや条件を代用している」「違う話を一文に詰めている」段落を見つけたときにだけ使う。`audit` では、組み立て直しの方向を診断として示すだけで、本文は書き換えない。
 
-`quick`(既定)/`full` の使い分けは natural-japanese の「実行モード」に従う。1章まるごとの改稿は 1万字を超えるので `full` を提案する。
+`quick`(既定)/`full` の使い分けと必須の検査観点は natural-japanese の「実行モード」に従う。資料の読込範囲は1節に従う。`full` の委譲は任意で、サブエージェントが使えない場合も三つの観点を自分で確認すればよい。1章まるごとの改稿は 1万字を超えるので `full` を提案する。
 
 ## 3. 工程
 
@@ -85,7 +87,7 @@ python <skills>/natural-japanese/scripts/lint.py --genre tech --json --baseline 
 ```
 
 ```powershell
-# PowerShell(Windows では文字コード指定が必須。指定しないと --baseline で読めない)
+# PowerShell 5.1 / 7 (UTF-8 の入出力を指定。--baseline は BOM 付きにも対応)
 $env:PYTHONUTF8=1; [Console]::OutputEncoding=[Text.Encoding]::UTF8
 python <skills>/natural-japanese/scripts/lint.py --genre tech <対象ファイル>
 python <skills>/natural-japanese/scripts/lint.py --genre tech --json <対象ファイル> | Out-File -Encoding utf8 $env:TEMP\lint-NN.json
@@ -98,7 +100,7 @@ python <skills>/natural-japanese/scripts/lint.py --genre tech --json --baseline 
 
 `references/manuscript-checklist.md` を上から順に回し、続けてプロファイルのプロジェクト固有のチェック項目を回す。チェックリストは stop-ai-slop-jp のクイックチェックから書籍・記事の原稿に合わない項目を外し、fujiwo-style 7節・japanese-tech-writing・natural-japanese の doctype(`references/doctypes/book.md` など)の品質基準を足したものである。優先順位は **立場 > 論証の厳密さ > 主体性(false agency・翻訳調の比喩や擬人化) > 読み手の負荷管理 > 構造のテンプレ > 語彙 > 記号**。記号だけ直して終えない。
 
-natural-japanese §4 の構造レビュー(`scripts/outline.py`)と読みやすさレビュー(`references/readability-antipatterns.md`)もここで行う。`full` のときはサブエージェントに分けてよいが、「直す/残す」の判断は親が行う。
+natural-japanese §4 の構造レビュー・読みやすさレビュー・doctype照合もここで行う。`full` では `scripts/outline.py` / `scripts/terms.py` を実行し、三つの観点をすべて確認する。文量が多く、独立して確認できる対象があり、利用環境で委譲が認められる場合に限り、担当を分けてよい。分けなくても三観点を確認すれば full として完了できる。「直す/残す」の判断は実行主体が一貫してまとめる。`quick` の詳細資料は、指摘の判断に必要な箇所だけを読む(1節)。
 
 構造レビューのあと、読みやすさレビューの前に、`explain-before-shorten` の手順1〜5で段落の説明の組み立てを点検する。対象は、2節に挙げた3種類の症状がある段落だけにする。全段落に一律に適用しない。段落を越える削除・移動が必要なら、直さずに確認事項とする(裁定 #32)。
 
@@ -106,7 +108,7 @@ natural-japanese §4 の構造レビュー(`scripts/outline.py`)と読みやす�
 
 ### 3-5. 収束と台帳
 
-finding ごとに「直した」か「残す(理由)」を台帳に書く。この原稿では**「残す」の行を必ず残す**こと。AI 臭を消す目的で全段落を一律に直すと、元原稿の濃淡が消えて逆に AI 臭が増す(natural-japanese `revision-guide.md`「改稿を一律に適用しない」)。特に次は一律置換しない。
+finding ごとに「直した」か「残す(理由)」を台帳に書く。検出した指摘をすべて仕分け、問題のない部分を変更しないことを確認する。「残す」が0件でも完了でき、指摘自体が0件なら「指摘なし」と記録する。完了条件のために指摘を作ったり、直せる問題を残したりしない。AI 臭を消す目的で全段落を一律に直すと、元原稿の濃淡が消えて逆に AI 臭が増す(natural-japanese `revision-guide.md`「改稿を一律に適用しない」)。特に次は一律置換しない。
 
 - `ではなく` : 本当の誤解訂正(「AはBではなくCだ」と読者が誤解しやすい箇所)だけ残し、残りは直接 Y を書く(裁定 #11)
 - `**用語**` : 初出の用語太字は残す。強調のための太字は節あたり1、2箇所まで(裁定 #9・#17)

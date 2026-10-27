@@ -1776,6 +1776,7 @@ def run_lint(
 
     stats = {
         "total_findings": len(findings),
+        "prose_char_count": sum(not char.isspace() for char in text),
         "by_category": {},
         "genre": genre,
         "experimental": experimental,
@@ -1888,7 +1889,7 @@ def main() -> int:
             print(f"エラー: --baseline ファイルが見つかりません: {args.baseline}", file=sys.stderr)
             return 1
         try:
-            loaded_baseline = json.loads(args.baseline.read_text(encoding="utf-8"))
+            loaded_baseline = json.loads(args.baseline.read_text(encoding="utf-8-sig"))
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             print(f"エラー: --baseline ファイルを読み込めません: {args.baseline} ({exc})", file=sys.stderr)
             return 1
@@ -1934,4 +1935,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
