@@ -12,7 +12,7 @@ C++11 で入った機能のうち、`auto` を紹介します。「型名を書�
 
 ## これまでの書き方と課題
 
-C++03 までは、変数を宣言するたびに型を書く必要がありました。標準ライブラリのコンテナのイテレーターでは、この型名がかなり長くなります。次は、名前ごとの得点の履歴を `std::map` に入れておき、`"Alice"` の得点を探す例です。データを用意する部分は `MakeScoreHistory` という関数にまとめ、記事では省いています。
+C++03 までは、変数を宣言するたびに型を書く必要がありました。標準ライブラリのコンテナーのイテレーターでは、この型名がかなり長くなります。次は、名前ごとの得点の履歴を `std::map` に入れておき、`"Alice"` の得点を探す例です。データを用意する部分は `MakeScoreHistory` という関数にまとめ、この記事では省いています。
 
 例 1. 「auto を使わずに、イテレーターの型を書く」
 
@@ -22,14 +22,14 @@ void FindWithExplicitType()
 {
     const std::map<std::string, std::vector<int>> scoreHistory = MakeScoreHistory();
 
-    // 型名を省かずに書くと、コンテナの型をまるごと繰り返すことになる
+    // 型名を省かずに書くと、コンテナーの型をまるごと繰り返すことになる
     std::map<std::string, std::vector<int>>::const_iterator it = scoreHistory.find("Alice");
     if (it != scoreHistory.end())
         std::cout << it->first << " has " << it->second.size() << " scores\n";
 }
 ```
 
-`find` の戻り値を受けるだけのために、コンテナの型をまるごと繰り返しています。読みにくいうえに、コンテナの型を `std::unordered_map` などに変えると、宣言の行に加えて、この行も直さなければなりません。
+`find` の戻り値を受けるだけのために、コンテナーの型をまるごと繰り返しています。読みにくいうえに、コンテナーの型を `std::unordered_map` などに変えると、宣言の行に加えて、この行も直さなければなりません。
 
 もっと困るのは、型を書き間違えてもコンパイルが通ってしまう場合があることです。これは「auto を使うメリット」の節で、実際に確かめます。
 
@@ -52,7 +52,7 @@ void FindWithAuto()
 }
 ```
 
-`it` の型は、`find` の戻り値の型から決まります。`scoreHistory` は `const` なので、`find` は `const_iterator` を返し、`it` も `const_iterator` になります。型は例 1 と同じで、実行結果も変わりません。コンテナの型を `std::unordered_map` などに変えても、この行は直さずに済みます。
+`it` の型は、`find` の戻り値の型から決まります。`scoreHistory` は `const` なので、`find` は `const_iterator` を返し、`it` も `const_iterator` になります。型は例 1 と同じで、実行結果も変わりません。コンテナーの型を `std::unordered_map` などに変えても、この行は直さずに済みます。
 
 _[実行結果]_
 ```text
@@ -79,7 +79,7 @@ Alice has 2 scores
 
 `auto` には、型名を書かずに済むことのほかに、型の書き間違いを防げるというメリットがあります。
 
-ここからは、名前ごとの最新の得点だけを持つ `std::map<std::string, int>` を使います。データは `MakeLatestScores` という関数で用意します。
+要素の型を短くするため、ここからは、名前ごとの最新の得点だけを持つ `std::map<std::string, int>` を使います。データは `MakeLatestScores` という関数で用意します。
 
 このマップの要素の型は、`std::pair<const std::string, int>` です。マップのキーは書き換えられないので、`const` が付いています。この `const` を書き忘れて要素を受けると、どうなるでしょうか。
 
@@ -106,7 +106,7 @@ _[実行結果]_
 explicit type refers to the element: false
 ```
 
-`entry` は、マップの要素を参照していません。`std::pair` は、要素の型が変換できる別の `pair` から作れます。また、`const` の付いた参照は一時オブジェクトにも束縛できます。そのため、コンパイラーは要素を `std::pair<std::string, int>` に変換した一時オブジェクトを作り、`entry` をそこに束縛します。このときキーの文字列もコピーされますが、エラーにはなりません。g++ で `-Wall -Wextra` を指定しても、警告は出ませんでした。
+`entry` は、マップの要素を参照していません。`std::pair` は、要素の型が変換できる別の `pair` から作れます。また、`const` の付いた参照は一時オブジェクトにも束縛できます。そのため、コンパイラーは要素を `std::pair<std::string, int>` に変換した一時オブジェクトを作り、`entry` をそこに束縛します。このときキーの文字列もコピーされますが、エラーにはなりません。g++ 13.3 で `-Wall -Wextra` を指定しても、警告は出ませんでした。
 
 `const auto&` で受ければ、この問題は起きません。
 
@@ -166,7 +166,7 @@ after auto&: 90
 
 波括弧で初期化するときにも、注意が必要です。`auto values = {1, 2, 3};` のように `=` と波括弧を組み合わせると、`values` の型は `std::initializer_list<int>` になります。要素が一つの `auto x = {1};` でも同じで、`x` は `int` になりません。`int` として受けたいときは、`auto x = 1;` と書きます。
 
-※ `=` のない `auto x{1};` の型は、C++11 の規格では `std::initializer_list<int>`。C++17 で採用された N3922 で `int` に変更。g++ 13.3 は `-std=c++11` でも `int` と推論する。
+※ `=` のない `auto x{1};` の型は、C++11 の規格では `std::initializer_list<int>`。C++17 で採用された N3922 で `int` に変更。g++ 13.3 は `-std=c++11` でも `int` と推論。
 
 最後の注意点は、読みやすさです。`auto result = Calculate();` のように、右辺を見ても型が分からない箇所で `auto` を使うと、読み手は `Calculate` の宣言まで型を調べに行くことになります。お勧めの使い分けは、次のとおりです。
 

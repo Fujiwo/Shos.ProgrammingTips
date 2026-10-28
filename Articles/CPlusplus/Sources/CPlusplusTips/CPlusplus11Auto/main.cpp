@@ -25,7 +25,7 @@ void FindWithExplicitType()
 {
     const std::map<std::string, std::vector<int>> scoreHistory = MakeScoreHistory();
 
-    // 型名を省かずに書くと、コンテナの型をまるごと繰り返すことになる
+    // 型名を省かずに書くと、コンテナーの型をまるごと繰り返すことになる
     std::map<std::string, std::vector<int>>::const_iterator it = scoreHistory.find("Alice");
     if (it != scoreHistory.end())
         std::cout << it->first << " has " << it->second.size() << " scores\n";
