@@ -2,8 +2,10 @@
 
 - Claude Code の PostToolUse フック (Edit|Write) から呼ばれる。標準入力の JSON の
   tool_input.file_path が .claude/skills の下のときだけ同期する。
-- 引数 --force を付けて手動で実行すると、入力によらず同期する。
-- 同期は全体のミラーリングで行う。.claude/skills にないファイルは .github/skills から消す。
+- フックから呼ばれたときは、編集されたファイル 1 つだけをコピーする (/mnt/c 上で全体を
+  比較すると 10 秒以上かかるため)。.claude/skills から消したファイルはこのとき反映されない。
+- 引数 --force を付けて手動で実行すると、入力によらず全体をミラーリングする。
+  .claude/skills にないファイルは .github/skills から消す。コミット前に実行すること。
 """
 
 import filecmp
@@ -64,16 +66,30 @@ def mirror():
     return copied, len(removed)
 
 
+def sync_one(file_path):
+    source_path = Path(file_path).resolve()
+    relative_path = source_path.relative_to(SOURCE_ROOT)
+    if is_excluded(relative_path) or not source_path.is_file():
+        return 0
+    target_path = TARGET_ROOT / relative_path
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source_path, target_path)
+    return 1
+
+
 def main():
-    if "--force" not in sys.argv:
-        try:
-            hook_input = json.load(sys.stdin)
-        except json.JSONDecodeError:
-            return 0
-        if not is_source_edited(hook_input):
-            return 0
-    copied, removed = mirror()
-    print(f".github/skills を .claude/skills に同期した (更新 {copied} 件、削除 {removed} 件)")
+    if "--force" in sys.argv:
+        copied, removed = mirror()
+        print(f".github/skills を .claude/skills に同期した (更新 {copied} 件、削除 {removed} 件)")
+        return 0
+    try:
+        hook_input = json.load(sys.stdin)
+    except json.JSONDecodeError:
+        return 0
+    if not is_source_edited(hook_input):
+        return 0
+    copied = sync_one(hook_input["tool_input"]["file_path"])
+    print(f".github/skills に {copied} 件同期した")
     return 0
 
 
