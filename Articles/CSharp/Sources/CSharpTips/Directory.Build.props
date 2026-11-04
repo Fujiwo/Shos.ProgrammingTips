@@ -1,0 +1,9 @@
+<!-- CSharpTips のすべてのプロジェクトに適用する設定 -->
+<Project>
+  <PropertyGroup>
+    <!-- バグ含みのコードを防ぐため、警告をエラーとして扱う -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- 最新のアナライザーの規則で検査する (CA1852 は .editorconfig で有効にする) -->
+    <AnalysisLevel>latest</AnalysisLevel>
+  </PropertyGroup>
+</Project>

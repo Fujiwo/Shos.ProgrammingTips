@@ -76,7 +76,7 @@ void AddWithMove()
 }
 
 // 例 4. 値で受け取り、メンバーにムーブする
-class Document
+class Document final // 継承を想定しないので、継承を禁じる
 {
 public:
     // 引数を値で受け取り、メンバーへムーブする。

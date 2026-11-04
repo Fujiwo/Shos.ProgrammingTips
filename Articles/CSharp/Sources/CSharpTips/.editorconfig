@@ -1,0 +1,6 @@
+# CSharpTips のアナライザーの設定
+
+[*.cs]
+# 継承を想定しない internal の型に sealed を求める (CA1852)。
+# public の型は検査しないので、Tools/check_class_design.py で補う
+dotnet_diagnostic.CA1852.severity = error

@@ -52,9 +52,21 @@ Articles/CSharp/
 ```
 
 - 各ソリューションの `Hello〜` プロジェクト(`HelloCSharpTips`、`HelloCPlusplusTips`)は、記事に対応しない雛形で、開発環境とソリューションがビルドできることの確認に使う。新しいプロジェクトを作るときの設定の基にもする。
-- サンプルの確認には、次のスクリプトを使う。どちらも、GitHub Actions(`.github/workflows/check.yml`)が push と pull request のたびに実行する。
+- サンプルの確認には、次のスクリプトとコマンドを使う。いずれも、GitHub Actions(`.github/workflows/check.yml`)が push と pull request のたびに実行する。
   - `python3 Tools/check_article_sources.py`: 記事に埋め込んだコードが `Sources/` のコードと一致するかを確認する。
-  - `python3 Tools/build_cpp_samples.py`: C++ のプロジェクトを、`LanguageStandard` に合わせた g++ でビルド・実行する。MSVC でのビルドの代わりにはならない。
+  - `python3 Tools/check_class_design.py`: C++ と C# のクラスが、下の「バグ含みのコードを書かない」の規則に従っているかを確認する。正規表現による簡易な検査で、見逃しと誤検知の例はスクリプトの冒頭に書いてある。
+  - `python3 Tools/build_cpp_samples.py`: C++ のプロジェクトを、`LanguageStandard` に合わせた g++ でビルド・実行する。警告はエラーとして扱う。MSVC でのビルドの代わりにはならない。
+  - `dotnet build Articles/CSharp/Sources/CSharpTips/CSharpTips.slnx`: C# のプロジェクトをビルドする。`CSharpTips` の `Directory.Build.props` と `.editorconfig` により、警告と CA1852 (sealed の付け忘れ) をエラーとして扱う。
+
+### バグ含みのコードを書かない
+
+**バグ含みのコード**とは、今はバグが見えていないが、バグの発生原因を含むコードのこと。サンプルには書かない。
+
+- 継承を想定しないクラスは、継承を禁じる。継承されて、基底クラスのポインターや参照を通して扱われると、誤動作することがあるため。
+  - C++: C++11 以降のクラス・構造体には、`final` を付ける。基底クラスとして設計したクラスと、`final` のない C++03 の書き方を示すクラスには、`virtual` デストラクターを宣言する。C++11 以降の値型には、`virtual` デストラクターより `final` を選ぶ(デストラクターを宣言すると、ムーブ操作が自動では作られなくなるため)。
+  - C#: クラスとレコードには、`sealed`・`static`・`abstract` のいずれかを付ける。継承を想定したクラスには、`virtual`・`abstract`・`protected` のメンバーを宣言する。
+- 対処しても残る危険は、対処できるなら対処する。対処できないなら、その危険をコードのコメントに書く(例: `virtual` デストラクターを付けても残る、コピーによるスライシング)。
+- 警告はエラーとして扱う。C++ の vcxproj には `TreatWarningAsError` を、C# には `CSharpTips` の `Directory.Build.props` を使う。新しいプロジェクトも、`Hello〜` プロジェクトの設定を基にして、この設定を引き継ぐ。
 
 ## 執筆ルール
 

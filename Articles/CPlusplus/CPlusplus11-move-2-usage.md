@@ -12,7 +12,8 @@ C++11 のムーブを紹介します。ムーブを使うと、`std::vector` や
 
 連載「C++11 のムーブ」の2本目です。連載のほかの記事は次のとおりです。
 
-- 1本目: [C++11 の右辺値参照: 左辺値と右辺値で処理を分け、ムーブの土台を作る](CPlusplus11-move-1-rvalue-reference.md)
+- 1本目: [連載「C++11 のムーブ」 その1: C++11 の右辺値参照](CPlusplus11-move-1-rvalue-reference.md)
+- 3本目: [連載「C++11 のムーブ」 その3: 自作のクラスも、コピーせずに受け渡せるようにする](CPlusplus11-move-3-class.md)
 
 ## これまでの書き方と課題
 
@@ -147,7 +148,7 @@ C++11 の `push_back` には、`const T&` を受け取るものと、`T&&` を�
 
 _[C++]_
 ```cpp
-class Document
+class Document final // 継承を想定しないので、継承を禁じる
 {
 public:
     // 引数を値で受け取り、メンバーへムーブする。
