@@ -33,7 +33,7 @@ void CopyAndMove()
     // ムーブ: original の配列を、そのまま引き継ぐ
     std::vector<std::string> moved = std::move(original);
     std::cout << "move: same array = " << (moved.data() == originalArray) << '\n';
-    // original の値は未規定になったので、このあとは使わない
+    // original の値は未規定になったので、このあとは代入するか破棄するだけにする
 }
 
 // 例 2. 関数から、値で返す
@@ -44,7 +44,7 @@ void LoadLinesInto(std::vector<std::string>& lines)
     lines.push_back("second line");
 }
 
-// C++11 からは、値で返しても要素はコピーされない
+// C++11 からは、コピーが省略されないときも、値で返せば要素はコピーされない
 std::vector<std::string> LoadLines()
 {
     std::vector<std::string> lines;

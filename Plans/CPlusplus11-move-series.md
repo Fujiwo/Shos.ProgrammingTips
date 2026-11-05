@@ -23,7 +23,7 @@
 | 4 | `CPlusplus11-move-4-perfect-forwarding.md` | `CPlusplus11Move4PerfectForwarding` | `Plans/CPlusplus11-move-4-perfect-forwarding.md` |
 
 - ファイル名に `move-<番号>` を入れるのは、目次(`Articles/README.md`)の並び順を連載の順にするため。目次の生成スクリプトは、ファイル名の順に記事を並べる。番号がないと、`CPlusplus11-move-constructor.md` が `CPlusplus11-move.md` より前に、`CPlusplus11-rvalue-reference.md` が最後に並ぶ。
-- タイトルの案は、記事ごとの計画書の 1-1 に書く。既存の記事とそろえ、`C++11 の <機能>: <メリット>` の形にする。
+- タイトルの案は、記事ごとの計画書の 1-1 に書く。H1 は `連載「C++11 のムーブ」 その<番号>: <副題>` の形にする。副題は、記事 1 では機能名 (`C++11 の右辺値参照`)、記事 2〜4 ではその機能のメリットとする(2026-11-05、著者の判断で、書き終えた記事のタイトルに合わせて改めた)。
 
 ## 3. 記事ごとの分担
 

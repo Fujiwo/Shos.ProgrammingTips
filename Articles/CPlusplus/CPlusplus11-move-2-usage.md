@@ -14,6 +14,7 @@ C++11 のムーブを紹介します。ムーブを使うと、`std::vector` や
 
 - 1本目: [連載「C++11 のムーブ」 その1: C++11 の右辺値参照](CPlusplus11-move-1-rvalue-reference.md)
 - 3本目: [連載「C++11 のムーブ」 その3: 自作のクラスも、コピーせずに受け渡せるようにする](CPlusplus11-move-3-class.md)
+- 4本目: [連載「C++11 のムーブ」 その4: 受け取った引数を、左辺値か右辺値かを保ったまま渡す](CPlusplus11-move-4-perfect-forwarding.md)
 
 ## これまでの書き方と課題
 
@@ -48,7 +49,7 @@ void CopyAndMove()
     // ムーブ: original の配列を、そのまま引き継ぐ
     std::vector<std::string> moved = std::move(original);
     std::cout << "move: same array = " << (moved.data() == originalArray) << '\n';
-    // original の値は未規定になったので、このあとは使わない
+    // original の値は未規定になったので、このあとは代入するか破棄するだけにする
 }
 ```
 
@@ -87,7 +88,7 @@ void LoadLinesInto(std::vector<std::string>& lines)
     lines.push_back("second line");
 }
 
-// C++11 からは、値で返しても要素はコピーされない
+// C++11 からは、コピーが省略されないときも、値で返せば要素はコピーされない
 std::vector<std::string> LoadLines()
 {
     std::vector<std::string> lines;

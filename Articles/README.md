@@ -15,6 +15,7 @@
 - [連載「C++11 のムーブ」 その1: C++11 の右辺値参照](CPlusplus/CPlusplus11-move-1-rvalue-reference.md)
 - [連載「C++11 のムーブ」 その2: 大きなオブジェクトを、コピーせずに受け渡す](CPlusplus/CPlusplus11-move-2-usage.md)
 - [連載「C++11 のムーブ」 その3: 自作のクラスも、コピーせずに受け渡せるようにする](CPlusplus/CPlusplus11-move-3-class.md)
+- [連載「C++11 のムーブ」 その4: 受け取った引数を、左辺値か右辺値かを保ったまま渡す](CPlusplus/CPlusplus11-move-4-perfect-forwarding.md)
 
 ## JavaScript
 
