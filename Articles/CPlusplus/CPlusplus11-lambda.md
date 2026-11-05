@@ -50,7 +50,7 @@ function pointer: 4 scores >= 60
 _[C++]_
 ```cpp
 // 閾値をメンバー変数に持ち、operator() で比べる
-class AtLeast
+class AtLeast final // 継承を想定しないので、継承を禁じる
 {
 public:
     explicit AtLeast(int threshold) : threshold_(threshold) {}

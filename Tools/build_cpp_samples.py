@@ -3,8 +3,12 @@
 - Articles/ の下の *.vcxproj ごとに、ClCompile のソースファイルを g++ でビルドする。
 - 言語標準は、vcxproj の LanguageStandard (stdcpp14 など) を g++ の -std に読み替える。
   LanguageStandard がなければ、MSVC の既定の C++14 とする。
+- 警告はエラーとして扱う (-Werror)。-Wall -Wextra に含まれない -Wnon-virtual-dtor も加え、
+  仮想関数を持つのに virtual デストラクターのないクラスを見つける。
 - ビルドしたプログラムを実行し、ビルドか実行に失敗したプロジェクトがあれば、
   終了コード 1 で終わる。MSVC でのビルドの代わりではなく、CI での簡易な確認に使う。
+  MSVC だけが出す警告は CI では確かめられないので、vcxproj の TreatWarningAsError で、
+  Visual Studio でのビルド時にエラーにする。
 """
 
 import re
@@ -26,6 +30,9 @@ GCC_STANDARDS = {
 }
 DEFAULT_STANDARD = "c++14"
 
+# 警告をエラーにして、バグ含みのコードを CI で止める
+WARNING_OPTIONS = ["-Wall", "-Wextra", "-Wnon-virtual-dtor", "-Werror"]
+
 LANGUAGE_STANDARD_PATTERN = re.compile(r"<LanguageStandard>(\w+)</LanguageStandard>")
 SOURCE_PATTERN = re.compile(r'<ClCompile Include="([^"]+)"')
 
@@ -45,7 +52,7 @@ def build_and_run(project_path, output_directory):
     if not sources:
         print("ソースファイルがない")
         return False
-    build = subprocess.run(["g++", f"-std={standard}", "-Wall", "-Wextra", "-o", str(executable), *sources])
+    build = subprocess.run(["g++", f"-std={standard}", *WARNING_OPTIONS, "-o", str(executable), *sources])
     return build.returncode == 0 and subprocess.run([str(executable)]).returncode == 0
 
 

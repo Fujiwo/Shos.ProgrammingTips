@@ -31,7 +31,7 @@ void CountWithFunctionPointer()
 
 // 例 2. 関数オブジェクトで、閾値を持たせる
 // 閾値をメンバー変数に持ち、operator() で比べる
-class AtLeast
+class AtLeast final // 継承を想定しないので、継承を禁じる
 {
 public:
     explicit AtLeast(int threshold) : threshold_(threshold) {}

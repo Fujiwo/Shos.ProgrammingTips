@@ -12,7 +12,9 @@ C++11 のムーブを紹介します。ムーブを使うと、`std::vector` や
 
 連載「C++11 のムーブ」の2本目です。連載のほかの記事は次のとおりです。
 
-- 1本目: [C++11 の右辺値参照: 左辺値と右辺値で処理を分け、ムーブの土台を作る](CPlusplus11-move-1-rvalue-reference.md)
+- 1本目: [連載「C++11 のムーブ」 その1: C++11 の右辺値参照](CPlusplus11-move-1-rvalue-reference.md)
+- 3本目: [連載「C++11 のムーブ」 その3: 自作のクラスも、コピーせずに受け渡せるようにする](CPlusplus11-move-3-class.md)
+- 4本目: [連載「C++11 のムーブ」 その4: 受け取った引数を、左辺値か右辺値かを保ったまま渡す](CPlusplus11-move-4-perfect-forwarding.md)
 
 ## これまでの書き方と課題
 
@@ -47,7 +49,7 @@ void CopyAndMove()
     // ムーブ: original の配列を、そのまま引き継ぐ
     std::vector<std::string> moved = std::move(original);
     std::cout << "move: same array = " << (moved.data() == originalArray) << '\n';
-    // original の値は未規定になったので、このあとは使わない
+    // original の値は未規定になったので、このあとは代入するか破棄するだけにする
 }
 ```
 
@@ -59,7 +61,7 @@ move: same array = true
 
 コピーした `copied` は別の配列を持ち、ムーブした `moved` は、`original` が持っていた配列をそのまま使っています。
 
-※ ムーブしたあとも同じ配列を使うことは、規格では明文化なし。この記事の実行結果 (例 4 を含む) は、g++ 13.3 の標準ライブラリ (libstdc++) でのもの。
+※ ムーブしたあとも同じ配列を使うことは、規格では明文化なし。この記事の実行結果 (例 4 を含む) は、MSVC の標準ライブラリと、g++ 13.3 の標準ライブラリ (libstdc++) で同じになることを確認。
 
 ムーブ構築が選ばれるのは、`std::move(original)` で `original` を右辺値として渡しているからです。[右辺値参照の記事](CPlusplus11-move-1-rvalue-reference.md)で説明したとおり、`std::move` は引数を右辺値として扱うキャストで、それ自体は何もムーブしません。右辺値を受け取った `std::vector` のムーブコンストラクターが、中身を引き取ります。
 
@@ -86,7 +88,7 @@ void LoadLinesInto(std::vector<std::string>& lines)
     lines.push_back("second line");
 }
 
-// C++11 からは、値で返しても要素はコピーされない
+// C++11 からは、コピーが省略されないときも、値で返せば要素はコピーされない
 std::vector<std::string> LoadLines()
 {
     std::vector<std::string> lines;
@@ -147,7 +149,7 @@ C++11 の `push_back` には、`const T&` を受け取るものと、`T&&` を�
 
 _[C++]_
 ```cpp
-class Document
+class Document final // 継承を想定しないので、継承を禁じる
 {
 public:
     // 引数を値で受け取り、メンバーへムーブする。
